@@ -1,6 +1,7 @@
 package configs
 
-type logConfig struct {
-	Path  string `yaml:"path"`
-	Level string `yaml:"level"`
+type LoggerConfig struct {
+	Path    string `yaml:"path"`
+	Level   int    `yaml:"level"`
+	envPath string
 }

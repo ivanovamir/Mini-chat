@@ -1,0 +1,2 @@
+{"time":"2023-08-10T01:14:33.817405+03:00","level":"INFO","source":{"function":"main.main","file":"/Users/amir/Documents/work/Self/Go_projects/mini_chat/cmd/main.go","line":21},"msg":"info","version":"1.0"}
+{"time":"2023-08-10T01:19:22.586612+03:00","level":"INFO","source":{"function":"main.main","file":"/Users/amir/Documents/work/Self/Go_projects/mini_chat/cmd/main.go","line":21},"msg":"info","ver.":"1.0"}

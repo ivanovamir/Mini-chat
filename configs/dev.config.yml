@@ -1,0 +1,12 @@
+app:
+    ver: 1.0
+
+server:
+    port: 8080
+    address: 127.0.0.1
+    type: tcp
+    mode: 2 # 1 = release, 2 = debug
+
+logger:
+    path: logs/dev.log
+    level: 2 # 1 = release, 2 = debug

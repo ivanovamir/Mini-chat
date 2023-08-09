@@ -1,9 +1,0 @@
-server:
-    port: 8080
-    address: 127.0.0.1
-    type: tcp
-    mode: 1
-
-logger:
-    path: logs
-    level: debug
