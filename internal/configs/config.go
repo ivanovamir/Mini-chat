@@ -9,9 +9,10 @@ import (
 type configOptions func(*Config)
 
 type Config struct {
-	HandlerConfig ServerConfig `yaml:"server"`
-	LoggerConfig  LoggerConfig `yaml:"logger"`
-	AppVersion    AppConfig    `yaml:"app"`
+	HandlerConfig    ServerConfig     `yaml:"server"`
+	LoggerConfig     LoggerConfig     `yaml:"logger"`
+	AppVersion       AppConfig        `yaml:"app"`
+	PostgresDBConfig PostgresDBConfig `yaml:"postgres"`
 }
 
 var globalConfigOptions []configOptions
@@ -30,6 +31,10 @@ func NewConfig() *Config {
 	validateServerMode()
 
 	if err := cleanenv.ReadConfig(os.Getenv("CONFIG_PATH"), cfg); err != nil {
+		return nil
+	}
+
+	if err := cleanenv.ReadEnv(cfg); err != nil {
 		return nil
 	}
 

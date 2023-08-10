@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"mini_chat/internal/configs"
 	"mini_chat/pkg/logger"
+	"mini_chat/pkg/postgres"
 )
 
 func main() {
@@ -12,7 +15,7 @@ func main() {
 	//TODO: implement errors
 	//TODO: implement handler
 	//TODO: implement server
-	//TODO: implement db
+	//TODO: implement db +
 
 	cfg := configs.NewConfig()
 
@@ -27,6 +30,15 @@ func main() {
 	}
 
 	lg.Info("info")
+
+	db, err := postgres.NewPostgresDB(context.Background(), &cfg.PostgresDBConfig)
+
+	if err != nil {
+		log.Printf("[ERROR]: %v", err.Error())
+		return
+	}
+
+	defer db.Close()
 
 	fmt.Println(cfg)
 }

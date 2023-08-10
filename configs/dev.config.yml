@@ -10,3 +10,13 @@ server:
 logger:
     path: logs/dev.log
     level: 2 # 1 = release, 2 = debug
+
+postgres:
+    host: localhost
+    port: 5432
+    user: amir
+    database: chat
+    sslmode: disable
+    max_conn_attempts: 5
+    maxconn: 100
+    max_conn_delay: 5 # seconds
