@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type Func func(ctx context.Context) error
+type Func func(context.Context) error
 
 type Closer struct {
 	mu    sync.Mutex

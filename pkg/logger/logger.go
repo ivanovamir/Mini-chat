@@ -2,15 +2,19 @@ package logger
 
 import (
 	"log/slog"
-	"mini_chat/internal/configs"
 	"os"
 	"path"
 )
 
 type Logger struct {
 	*slog.Logger
-	cfg        *configs.LoggerConfig
+	cfg        *LoggerConfig
 	appVersion string
+}
+
+type LoggerConfig struct {
+	Path  string `yaml:"path"`
+	Level int    `yaml:"level"`
 }
 
 func NewLogger(options ...Option) *Logger {

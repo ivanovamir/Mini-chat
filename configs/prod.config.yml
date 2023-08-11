@@ -16,7 +16,7 @@ postgres:
   port: 5432
   user: amir
   database: chat
-  sslmode: disable
+  ssl_mode: disable
+  max_conn: 100
   max_conn_attempts: 5
-  maxconn: 100
   max_conn_delay: 5 # seconds

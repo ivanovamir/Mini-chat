@@ -3,6 +3,9 @@
 run:
 	go run cmd/main.go
 
+build:
+	CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" cmd/main.go
+
 migrate_create:
 	migrate create -ext sql -dir db/migrations -seq $(NAME)
 

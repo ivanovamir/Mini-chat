@@ -1,17 +1,18 @@
 package handler
 
 import (
-	"mini_chat/internal/configs"
+	"fmt"
+	"mini_chat/internal/config"
 	"mini_chat/pkg/logger"
 	"net"
 )
 
 type Handler struct {
-	cfg *configs.ServerConfig
+	cfg *config.ServerConfig
 	log *logger.Logger
 }
 
-func NewHandler(cfg *configs.ServerConfig, log *logger.Logger) *Handler {
+func NewHandler(cfg *config.ServerConfig, log *logger.Logger) *Handler {
 	return &Handler{
 		cfg: cfg,
 		log: log,
@@ -20,13 +21,13 @@ func NewHandler(cfg *configs.ServerConfig, log *logger.Logger) *Handler {
 
 /*
 Writing in file in Unix use POSIX IO syscalls,
-so they are safe as the underlying syscalls
+so they are safe as the underlying syscalls.
 */
-func (h *Handler) InitRoutes() {
-	l, err := net.Listen(h.cfg.ListenType, h.cfg.ListenAddr)
+func (h *Handler) InitRoutes() error {
+	l, err := net.Listen(h.cfg.ListenType, fmt.Sprintf("%s:%s", h.cfg.ListenAddr, h.cfg.ListenPort))
+
 	if err != nil {
-		h.log.Error(err.Error())
-		return
+		return err
 	}
 
 	for {
@@ -41,8 +42,17 @@ func (h *Handler) InitRoutes() {
 }
 
 func (h *Handler) handleConn(c net.Conn) {
-	_, err := c.Write([]byte("Hello world"))
+	defer c.Close()
+	remoteAddr := c.RemoteAddr()
+	remoteIP, _, err := net.SplitHostPort(remoteAddr.String())
+	if err != nil {
+		h.log.Error(err.Error())
+		return
+	}
 
+	response := fmt.Sprintf("hello boys!\nremote addr: %s | remote IP: %s\n", remoteAddr.String(), remoteIP)
+
+	_, err = c.Write([]byte(response))
 	if err != nil {
 		h.log.Error(err.Error())
 		return

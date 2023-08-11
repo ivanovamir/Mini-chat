@@ -1,18 +1,20 @@
-package configs
+package config
 
 import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
+	"mini_chat/pkg/logger"
+	"mini_chat/pkg/postgres"
 	"os"
 )
 
 type configOptions func(*Config)
 
 type Config struct {
-	HandlerConfig    ServerConfig     `yaml:"server"`
-	LoggerConfig     LoggerConfig     `yaml:"logger"`
-	AppVersion       AppConfig        `yaml:"app"`
-	PostgresDBConfig PostgresDBConfig `yaml:"postgres"`
+	HandlerConfig    ServerConfig              `yaml:"server"`
+	AppVersion       AppConfig                 `yaml:"app"`
+	LoggerConfig     logger.LoggerConfig       `yaml:"logger"`
+	PostgresDBConfig postgres.PostgresDBConfig `yaml:"postgres"`
 }
 
 var globalConfigOptions []configOptions

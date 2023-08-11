@@ -4,12 +4,22 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"mini_chat/internal/configs"
 	"time"
 )
 
-// TODO: remove dependencies from internal (config)
-func NewPostgresDB(ctx context.Context, cfg *configs.PostgresDBConfig) (pool *pgxpool.Pool, err error) {
+type PostgresDBConfig struct {
+	Host            string `yaml:"host"`
+	Port            string `yaml:"port"`
+	User            string `yaml:"user"`
+	Password        string `env:"POSTGRES_PASSWORD"`
+	Database        string `yaml:"database"`
+	SslMode         string `yaml:"ssl_mode"`
+	MaxConn         int    `yaml:"max_conn"`
+	MaxConnAttempts int    `yaml:"max_conn_attempts"`
+	MaxConnDelay    int    `yaml:"max_conn_delay"`
+}
+
+func NewPostgresDB(ctx context.Context, cfg *PostgresDBConfig) (pool *pgxpool.Pool, err error) {
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Database, cfg.SslMode)
 
 	pgxCfg, parseConfigErr := pgxpool.ParseConfig(dsn)
@@ -18,6 +28,18 @@ func NewPostgresDB(ctx context.Context, cfg *configs.PostgresDBConfig) (pool *pg
 		return nil, parseConfigErr
 	}
 
+	//pgxCfg.MaxConns = int32(cfg.MaxConn)
+	type PostgresDBConfig struct {
+		Host            string `yaml:"host"`
+		Port            string `yaml:"port"`
+		User            string `yaml:"user"`
+		Password        string `env:"POSTGRES_PASSWORD"`
+		Database        string `yaml:"database"`
+		SslMode         string `yaml:"ssl_mode"`
+		MaxConn         int    `yaml:"max_conn"`
+		MaxConnAttempts int    `yaml:"max_conn_attempts"`
+		MaxConnDelay    int    `yaml:"max_conn_delay"`
+	}
 	pool, parseConfigErr = pgxpool.NewWithConfig(ctx, pgxCfg)
 
 	if parseConfigErr != nil {

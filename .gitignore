@@ -2,3 +2,7 @@
 ref.txt
 .env
 logs
+postgres_data
+vps
+deploy/nginx/logs
+deploy/nginx/certs
