@@ -8,32 +8,45 @@ import (
 
 type Logger struct {
 	*slog.Logger
-	outputPath,
+	cfg        *LoggerConfig
 	appVersion string
-	mode int
+}
+
+type LoggerConfig struct {
+	Path  string `yaml:"path"`
+	Level int    `yaml:"level"`
 }
 
 func NewLogger(options ...Option) *Logger {
 	l := new(Logger)
+
 	for _, option := range options {
 		option(l)
 	}
 
-	if err := os.MkdirAll(path.Dir(l.outputPath), 0755); err != nil {
+	if err := os.MkdirAll(path.Dir(l.cfg.Path), 0755); err != nil {
 		return nil
 	}
 
-	logFile, err := os.OpenFile(l.outputPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	logFile, err := os.OpenFile(l.cfg.Path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 
 	if err != nil {
 		return nil
 	}
 
-	l.Logger = slog.New(slog.NewJSONHandler(logFile, &slog.HandlerOptions{
+	handlerOptions := &slog.HandlerOptions{
 		AddSource:   true,
-		Level:       slog.LevelInfo,
 		ReplaceAttr: nil,
-	})).With(slog.String("version", l.appVersion))
+	}
+
+	switch l.cfg.Level {
+	case 1:
+		handlerOptions.Level = slog.LevelError
+	case 2:
+		handlerOptions.Level = slog.LevelDebug
+	}
+
+	l.Logger = slog.New(slog.NewJSONHandler(logFile, handlerOptions)).With(slog.String("ver.", l.appVersion))
 
 	return l
 }

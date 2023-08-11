@@ -1,0 +1,11 @@
+BEGIN;
+
+DROP TABLE IF EXISTS "user";
+
+DROP INDEX IF EXISTS login_usr_idx;
+
+DROP TABLE IF EXISTS message;
+
+DROP INDEX IF EXISTS user_id_msg_idx;
+
+COMMIT;
